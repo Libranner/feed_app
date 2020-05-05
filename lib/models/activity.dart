@@ -1,17 +1,21 @@
 import 'dart:convert';
 
+import 'package:meta/meta.dart';
+
 class Activity {
+  final int id;
   final String who;
   final String what;
   final String where;
   final DateTime when;
 
-  Activity(
-    this.who,
-    this.what,
-    this.where,
-    this.when,
-  );
+  Activity({
+    @required this.id,
+    @required this.who,
+    @required this.what,
+    @required this.where,
+    @required this.when,
+  });
 
   Activity copyWith({
     String who,
@@ -20,15 +24,21 @@ class Activity {
     DateTime when,
   }) {
     return Activity(
-      who ?? this.who,
-      what ?? this.what,
-      where ?? this.where,
-      when ?? this.when,
+      id: this.id,
+      who: who ?? this.who,
+      what: what ?? this.what,
+      where: where ?? this.where,
+      when: when ?? this.when,
     );
+  }
+
+  bool isOwner(String userId) {
+    return who == userId;
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'who': who,
       'what': what,
       'where': where,
@@ -40,10 +50,11 @@ class Activity {
     if (map == null) return null;
 
     return Activity(
-      map['who'],
-      map['what'],
-      map['where'],
-      DateTime.fromMillisecondsSinceEpoch(map['when']),
+      id: map['id'] as int,
+      who: map['who'],
+      what: map['what'],
+      where: map['where'],
+      when: DateTime.fromMillisecondsSinceEpoch(map['when']),
     );
   }
 
@@ -53,7 +64,7 @@ class Activity {
 
   @override
   String toString() {
-    return 'Activity(who: $who, what: $what, where: $where, when: $when)';
+    return 'Activity(id: $id , who: $who, what: $what, where: $where, when: $when)';
   }
 
   @override
@@ -61,6 +72,7 @@ class Activity {
     if (identical(this, o)) return true;
 
     return o is Activity &&
+        o.id == id &&
         o.who == who &&
         o.what == what &&
         o.where == where &&
@@ -69,6 +81,10 @@ class Activity {
 
   @override
   int get hashCode {
-    return who.hashCode ^ what.hashCode ^ where.hashCode ^ when.hashCode;
+    return id.hashCode ^
+        who.hashCode ^
+        what.hashCode ^
+        where.hashCode ^
+        when.hashCode;
   }
 }
