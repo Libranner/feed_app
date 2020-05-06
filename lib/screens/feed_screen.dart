@@ -46,9 +46,6 @@ class _FeedScreenState extends State<FeedScreen> {
       useRootNavigator: false,
     );
 
-    print(activity);
-    print(_currentFeed);
-
     if (activity != null) {
       _feedBloc.add(AddActivityToFeed(
         feed: _currentFeed,
@@ -81,7 +78,7 @@ class _FeedScreenState extends State<FeedScreen> {
         if (state is FeedLoaded) {
           _currentFeed = state.feed;
           return Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
             child: ListView.separated(
               itemBuilder: (_, index) => _buildActivityContainer(
                 state.feed.activities[index],
@@ -123,13 +120,61 @@ class _FeedScreenState extends State<FeedScreen> {
               : _showActivityDetail(activity);
         },
         child: Container(
-          child: Column(
-            children: [
-              Text(activity.what),
-              Text(activity.who),
-              Text(activity.where),
-              Text(activity.when.toIso8601String()),
-            ],
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: const Color.fromRGBO(113, 221, 248, 0.8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 3.0,
+                  spreadRadius: 0.7,
+                  offset: const Offset(0, 0),
+                )
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Icon(Icons.person),
+                      ),
+                    ),
+                    const SizedBox(width: 15.0),
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(activity.who),
+                          Text(activity.when.toString()),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                Column(
+                  children: <Widget>[
+                    const Divider(thickness: 1.0),
+                    const SizedBox(height: 5.0),
+                    Text(
+                      activity.what,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -147,12 +192,13 @@ class FeedTestRepository implements FeedRepository {
   @override
   Future<Feed> getFeed() async {
     await Future.delayed(Duration(seconds: 2));
-    final acitivies = List.generate(1, (id) {
+    final acitivies = List.generate(100, (id) {
       return Activity(
         id: id,
-        who: "Who $id",
-        what: "What $id",
-        where: "Where $id",
+        who: "John",
+        what:
+            "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap",
+        where: "Cool Place",
         when: DateTime.now(),
       );
     });

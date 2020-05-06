@@ -19,7 +19,7 @@ class ActivityDetailModal extends StatelessWidget {
   Widget _buildActivityDetailCard() {
     return Builder(builder: (context) {
       return Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(30.0),
         child: Card(
           elevation: 2.0,
           shape: RoundedRectangleBorder(
@@ -40,7 +40,7 @@ class ActivityDetailModal extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(25.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
@@ -74,21 +74,29 @@ class ActivityDetailModal extends StatelessWidget {
                       children: <Widget>[
                         const Divider(thickness: 1.0),
                         const SizedBox(height: 5.0),
-                        Text(activity.what),
+                        Text(
+                          activity.what,
+                          textAlign: TextAlign.justify,
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 20.0),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: RaisedButton.icon(
+                        color: Colors.blueAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).pop(),
                         icon: Icon(
                           Icons.check,
+                          color: Colors.white,
                         ),
-                        label: Text('sas'),
+                        label: Text(
+                          "I'll go",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
                   ],
