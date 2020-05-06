@@ -208,6 +208,7 @@ class _FeedScreenState extends State<FeedScreen> {
 }
 
 class FeedTestRepository implements FeedRepository {
+  final _defaultActivititesNumber = 50;
   final feed = Feed(activities: []);
   @override
   Future<Feed> getFeed() async {
@@ -216,7 +217,7 @@ class FeedTestRepository implements FeedRepository {
     }
 
     await Future.delayed(Duration(seconds: 2));
-    final activities = List.generate(1, (id) {
+    final activities = List.generate(_defaultActivititesNumber, (id) {
       return Activity(
         id: Uuid().v1(),
         who: "John",
