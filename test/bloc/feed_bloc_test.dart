@@ -36,7 +36,7 @@ void main() {
 
   void setUpBadFeedRepository() {
     when(_feedRepository.getFeed()).thenThrow((_) async {
-      return ServerException();
+      return ServerException('ERROR GETTING FEED');
     });
   }
 

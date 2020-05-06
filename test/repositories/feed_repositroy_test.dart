@@ -11,12 +11,19 @@ import '../fixtures/fixture_reader.dart';
 class MockHttpClient extends Mock implements http.Client {}
 
 void main() {
-  FeedRepository datasource;
+  FeedRepository repository;
   MockHttpClient httpClient;
+  final activity = Activity(
+    id: "id",
+    who: "John",
+    what: "Play",
+    where: "My house",
+    when: DateTime.now(),
+  );
 
   setUp(() {
     httpClient = MockHttpClient();
-    datasource = FeedRepositoryImpl(httpClient: httpClient);
+    repository = FeedRepositoryImpl(httpClient: httpClient);
   });
 
   void setUpHttpClientSuccess() {
@@ -44,12 +51,30 @@ void main() {
     );
   }
 
+  void setUpSuccessfulPostReponse() {
+    when(httpClient.post(
+      any,
+      body: activity.toJson(),
+    )).thenAnswer(
+      (_) async => http.Response(fixture('activity.json'), 200),
+    );
+  }
+
+  void setUpSuccessfulPutReponse() {
+    when(httpClient.put(
+      any,
+      body: activity.toJson(),
+    )).thenAnswer(
+      (_) async => http.Response(fixture('activity.json'), 200),
+    );
+  }
+
   group('Feed Remote Datasource', () {
     test(
       'should perform a get request',
       () {
         setUpHttpClientSuccess();
-        datasource.getFeed();
+        repository.getFeed();
         verify(
           httpClient.get(
             'https://api.com',
@@ -67,8 +92,38 @@ void main() {
         final rawData = jsonMap['data'] as List;
         final expectedResult = rawData.map((f) => Activity.fromMap(f)).toList();
 
-        final feed = await datasource.getFeed();
+        final feed = await repository.getFeed();
         expect(feed.activities, equals(expectedResult));
+      },
+    );
+
+    test(
+      'should add new activity',
+      () async {
+        setUpSuccessfulPostReponse();
+        await repository.addActivity(activity);
+
+        verify(
+          httpClient.post(
+            any,
+            body: activity.toJson(),
+          ),
+        );
+      },
+    );
+
+    test(
+      'should update activity',
+      () async {
+        setUpSuccessfulPutReponse();
+        await repository.updateActivity(activity);
+
+        verify(
+          httpClient.put(
+            any,
+            body: activity.toJson(),
+          ),
+        );
       },
     );
 
@@ -76,7 +131,7 @@ void main() {
       'should throw a ServerException when the response code is 404',
       () async {
         setupHttpClientNotFound();
-        final call = datasource.getFeed;
+        final call = repository.getFeed;
 
         expect(() => call(), throwsA(isInstanceOf<ServerException>()));
       },

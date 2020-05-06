@@ -49,10 +49,12 @@ class _FeedScreenState extends State<FeedScreen> {
     );
 
     if (activity != null) {
-      _feedBloc.add(AddActivityToFeed(
-        feed: _currentFeed,
-        activity: activity,
-      ));
+      _feedBloc.add(
+        AddActivityToFeed(
+          feed: _currentFeed,
+          activity: activity,
+        ),
+      );
     }
   }
 
@@ -66,10 +68,12 @@ class _FeedScreenState extends State<FeedScreen> {
     );
 
     if (activity != null) {
-      _feedBloc.add(UpdateActivityOnFeed(
-        feed: _currentFeed,
-        activity: activity,
-      ));
+      _feedBloc.add(
+        UpdateActivityOnFeed(
+          feed: _currentFeed,
+          activity: activity,
+        ),
+      );
     }
   }
 
@@ -204,10 +208,15 @@ class _FeedScreenState extends State<FeedScreen> {
 }
 
 class FeedTestRepository implements FeedRepository {
+  final feed = Feed(activities: []);
   @override
   Future<Feed> getFeed() async {
+    if (feed?.activities?.isNotEmpty ?? false) {
+      return feed;
+    }
+
     await Future.delayed(Duration(seconds: 2));
-    final acitivies = List.generate(60, (id) {
+    final activities = List.generate(1, (id) {
       return Activity(
         id: Uuid().v1(),
         who: "John",
@@ -218,6 +227,19 @@ class FeedTestRepository implements FeedRepository {
       );
     });
 
-    return Feed(activities: acitivies);
+    feed.activities.addAll(activities);
+    return Feed(activities: activities);
+  }
+
+  @override
+  Future<bool> addActivity(Activity activity) async {
+    feed.activities.add(activity);
+    return true;
+  }
+
+  @override
+  Future<bool> updateActivity(Activity activity) async {
+    feed.updateActivity(activity);
+    return true;
   }
 }

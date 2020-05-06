@@ -1,16 +1,11 @@
-# feed_app
+# Feed App
 
-A new Flutter project.
+An app that displays a list of activities. An give the user the possibility to add new ones.
 
-## Getting Started
+## Notes
 
-This project is a starting point for a Flutter application.
+Project made using Flutter. Made using TDD, using **Mockito** for mocks, and the **flutter_test** package.
 
-A few resources to get you started if this is your first Flutter project:
+## Run the application
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You'll need **Flutter 1.12.13** or a newer version. It has been tested using Android and iOS Simulators.
