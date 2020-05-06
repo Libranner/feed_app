@@ -7,7 +7,7 @@ void main() {
     test('isOwner should return true if who equals param', () {
       final username = 'John';
       final activity = Activity(
-        id: 1,
+        id: "id",
         what: 'Play basketball',
         when: DateTime.now().add(const Duration(days: 2)),
         where: 'My house',
@@ -20,7 +20,7 @@ void main() {
     test('should map activity object from json', () {
       final jsonString = fixture('activity.json');
       final activity = Activity(
-        id: 1,
+        id: "1",
         what: 'Watch movie',
         when: DateTime.fromMillisecondsSinceEpoch(1584487455),
         where: 'My house',

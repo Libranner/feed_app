@@ -5,6 +5,7 @@ import 'package:feed_app/repositories/feed_repository.dart';
 import 'package:feed_app/screens/shared/empty_content_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 import 'activity/activity_detail_modal.dart';
 import 'activity/activity_form_modal.dart';
 
@@ -192,9 +193,9 @@ class FeedTestRepository implements FeedRepository {
   @override
   Future<Feed> getFeed() async {
     await Future.delayed(Duration(seconds: 2));
-    final acitivies = List.generate(100, (id) {
+    final acitivies = List.generate(50, (id) {
       return Activity(
-        id: id,
+        id: Uuid().toString(),
         who: "John",
         what:
             "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap",

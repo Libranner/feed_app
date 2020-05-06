@@ -81,8 +81,9 @@ void main() {
       test(
         'should emit [FeedLoading, FeedLoaded] when a new activity is added',
         () {
+          final id = 'id';
           final activity = Activity(
-            id: 100,
+            id: id,
             who: "who",
             what: "what",
             where: "where",
@@ -108,7 +109,7 @@ void main() {
         'should emit [FeedLoading, FeedLoaded] when an activity is updated',
         () {
           final activity = Activity(
-            id: 1,
+            id: '1',
             who: "who",
             what: "what",
             where: "where",

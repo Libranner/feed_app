@@ -52,13 +52,9 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       yield FeedLoading();
       await Future.delayed(Duration(seconds: 2));
       final feed = event.feed;
-      print(feed);
       feed.updateActivity(event.activity);
-      print(feed);
-      print(event.activity);
       yield FeedLoaded(feed);
     } catch (err) {
-      print(err);
       yield FeedLoadFailure(err.toString());
     }
   }

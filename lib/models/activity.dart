@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 class Activity {
-  final int id;
+  final String id;
   final String who;
   final String what;
   final String where;
@@ -50,7 +50,7 @@ class Activity {
     if (map == null) return null;
 
     return Activity(
-      id: map['id'] as int,
+      id: map['id'],
       who: map['who'],
       what: map['what'],
       where: map['where'],

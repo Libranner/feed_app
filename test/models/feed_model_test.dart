@@ -13,7 +13,7 @@ void main() {
 
   group('Feed Model', () {
     test('should be able to edit activity if isOwner', () {
-      final id = 1;
+      final id = "1";
       final activity = Activity(
         id: id,
         what: 'Play basketball',
@@ -21,14 +21,13 @@ void main() {
         where: 'My hosuse',
         who: 'username',
       );
-      print(feed);
       feed.updateActivity(activity);
       expect(activity, feed.find(id));
     });
 
     test('should be able to remove an activity using id', () {
-      final id = 1;
-      feed.removeActivity(1);
+      final id = "id";
+      feed.removeActivity(id);
       expect(null, feed.find(id));
     });
   });

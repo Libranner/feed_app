@@ -16,11 +16,11 @@ class Feed {
     );
   }
 
-  Activity find(int id) {
+  Activity find(String id) {
     return activities.firstWhere((a) => a.id == id, orElse: () => null);
   }
 
-  void removeActivity(int id) {
+  void removeActivity(String id) {
     activities.removeWhere((a) => a.id == id);
   }
 
