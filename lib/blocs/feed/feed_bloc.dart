@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:feed_app/blocs/bloc/feed_event.dart';
-import 'package:feed_app/blocs/bloc/feed_state.dart';
+import 'feed_event.dart';
+import 'feed_state.dart';
 import 'package:feed_app/repositories/feed_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -40,7 +40,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       Future.delayed(Duration(seconds: 2));
       final feed = event.feed;
       feed.activities.add(event.activity);
-      yield FeedActivityAdded(feed: feed, activity: event.activity);
+      yield FeedLoaded(feed);
     } catch (err) {
       yield FeedLoadFailure(err.toString());
     }
@@ -52,8 +52,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       yield FeedLoading();
       await Future.delayed(Duration(seconds: 2));
       final feed = event.feed;
+      print(feed);
       feed.updateActivity(event.activity);
-      yield FeedActivityUpdated(feed: feed, activity: event.activity);
+      print(feed);
+      print(event.activity);
+      yield FeedLoaded(feed);
     } catch (err) {
       print(err);
       yield FeedLoadFailure(err.toString());

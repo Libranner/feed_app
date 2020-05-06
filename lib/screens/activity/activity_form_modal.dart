@@ -1,5 +1,7 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:feed_app/models/activity.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ActivityFormModal extends StatefulWidget {
   final Activity activity;
@@ -14,20 +16,27 @@ class ActivityFormModal extends StatefulWidget {
 }
 
 class _ActivityFormModalState extends State<ActivityFormModal> {
-  final _whatController = TextEditingController();
-  final _whenController = TextEditingController();
-  final _whereController = TextEditingController();
+  final _whatTextController = TextEditingController();
+  final _whenTextController = TextEditingController();
+  final _whereTextController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  bool get _isEditing => widget.activity != null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_isEditing) {
+      _whatTextController.text = widget.activity.what;
+      _whereTextController.text = widget.activity.where;
+      _whenTextController.text = widget.activity.when.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: _buildActivityForm(),
-    );
-  }
-
-  Widget _buildActivityForm() {
-    return Builder(builder: (context) {
-      return Padding(
+      child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Card(
           elevation: 2.0,
@@ -51,12 +60,13 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextFormField(
-                        controller: _whatController,
+                        controller: _whatTextController,
                         maxLines: 3,
                         decoration: InputDecoration(
                           hintText: 'What you want to do?',
@@ -64,13 +74,13 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
                         keyboardType: TextInputType.text,
                         autocorrect: false,
                         autovalidate: true,
-                        // validator: (_) {
-                        //   return !state.isEmailValid ? '' : null;
-                        // },
+                        validator: (value) {
+                          return value.isEmpty ? 'Field is required' : null;
+                        },
                       ),
                       const SizedBox(height: 10.0),
                       TextFormField(
-                        controller: _whereController,
+                        controller: _whereTextController,
                         maxLines: 1,
                         decoration: InputDecoration(
                           hintText: 'Where?',
@@ -78,28 +88,48 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
                         keyboardType: TextInputType.text,
                         autocorrect: false,
                         autovalidate: true,
-                        // validator: (_) {
-                        //   return !state.isEmailValid ? '' : null;
-                        // },
+                        validator: (value) {
+                          return value.isEmpty ? 'Field is required' : null;
+                        },
                       ),
-                      const SizedBox(height: 10.0),
-                      TextFormField(
-                        controller: _whenController,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          hintText: 'When?',
+                      const SizedBox(height: 20.0),
+                      Container(
+                        height: 50,
+                        child: DateTimeField(
+                          format: DateFormat('yyyy-MM-dd HH:mm'),
+                          initialValue: widget.activity?.when,
+                          resetIcon: null,
+                          autocorrect: false,
+                          autovalidate: true,
+                          validator: (value) {
+                            return value == null ? 'Field is required' : null;
+                          },
+                          onShowPicker: (context, currentValue) async {
+                            final date = await showDatePicker(
+                                context: context,
+                                firstDate: DateTime.now(),
+                                initialDate: currentValue ?? DateTime.now(),
+                                lastDate: DateTime(2100));
+                            if (date != null) {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(
+                                    currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.combine(date, time);
+                            } else {
+                              return currentValue;
+                            }
+                          },
+                          controller: _whenTextController,
                         ),
-                        keyboardType: TextInputType.text,
-                        autocorrect: false,
-                        autovalidate: true,
-                        // validator: (_) {
-                        //   return !state.isEmailValid ? '' : null;
-                        // },
                       ),
                       const SizedBox(height: 20.0),
                       RaisedButton(
-                        onPressed: () {},
-                        child: Text('Add Activity'),
+                        onPressed: _save,
+                        child: Text(
+                          _isEditing ? 'Update' : 'Add Activity',
+                        ),
                       )
                     ],
                   ),
@@ -108,7 +138,21 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _save() {
+    if (_formKey.currentState.validate()) {
+      final activity = Activity(
+        id: widget.activity?.id ?? 1000,
+        who: "user-id",
+        what: _whatTextController.text,
+        where: _whereTextController.text,
+        when: DateTime.parse(_whenTextController.text),
       );
-    });
+
+      Navigator.of(context).pop(activity);
+    }
   }
 }

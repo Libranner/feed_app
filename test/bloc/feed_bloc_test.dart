@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:feed_app/blocs/bloc/bloc.dart';
+import 'package:feed_app/blocs/feed/bloc.dart';
 import 'package:feed_app/exceptions/server_exception.dart';
 import 'package:feed_app/models/activity.dart';
 import 'package:feed_app/models/feed.dart';
@@ -64,7 +64,7 @@ void main() {
       );
 
       test(
-        'should emit [FeedLoading, FeedLoaded]',
+        'should emit [FeedLoading, FeedLoaded] when fetching data',
         () {
           setUpGoodFeedRepository();
           final expected = [
@@ -79,7 +79,7 @@ void main() {
       );
 
       test(
-        'should emit [FeedLoading, FeedActivityAdded]',
+        'should emit [FeedLoading, FeedLoaded] when a new activity is added',
         () {
           final activity = Activity(
             id: 100,
@@ -89,20 +89,15 @@ void main() {
             when: DateTime.now(),
           );
 
+          final feed = _testFeed();
           setUpGoodFeedRepository();
           final expected = [
             FeedInitial(),
             FeedLoading(),
-            FeedActivityAdded(
-              feed: _testFeed(),
-              activity: activity,
-            ),
+            FeedLoaded(feed),
           ];
           _bloc.add(
-            AddActivityToFeed(
-              feed: _testFeed(),
-              activity: activity,
-            ),
+            AddActivityToFeed(feed: feed, activity: activity),
           );
 
           expectLater(_bloc.cast(), emitsInOrder(expected));
@@ -110,7 +105,7 @@ void main() {
       );
 
       test(
-        'should emit [FeedLoading, FeedActivityUpdated]',
+        'should emit [FeedLoading, FeedLoaded] when an activity is updated',
         () {
           final activity = Activity(
             id: 1,
@@ -124,10 +119,7 @@ void main() {
           final expected = [
             FeedInitial(),
             FeedLoading(),
-            FeedActivityUpdated(
-              feed: _testFeed(),
-              activity: activity,
-            ),
+            FeedLoaded(_testFeed()),
           ];
           _bloc.add(
             UpdateActivityOnFeed(

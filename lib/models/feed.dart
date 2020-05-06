@@ -4,9 +4,9 @@ import 'package:feed_app/models/activity.dart';
 
 class Feed {
   final List<Activity> activities;
-  Feed({
-    this.activities,
-  });
+  Feed({this.activities}) {
+    this.activities.sort((a, b) => a.when.compareTo(b.when));
+  }
 
   Feed copyWith({
     List<Activity> activities,
@@ -26,7 +26,7 @@ class Feed {
 
   void updateActivity(Activity activity) {
     final index = activities.indexOf(find(activity.id), 0);
-    activities.insert(index, activity);
+    activities.replaceRange(index, index + 1, [activity]);
   }
 
   Map<String, dynamic> toMap() {
