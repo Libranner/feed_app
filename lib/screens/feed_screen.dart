@@ -32,6 +32,7 @@ class _FeedScreenState extends State<FeedScreen> {
       appBar: AppBar(
         title: Text('My Feed'),
       ),
+      backgroundColor: Colors.grey[100],
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewActivity,
@@ -193,9 +194,9 @@ class FeedTestRepository implements FeedRepository {
   @override
   Future<Feed> getFeed() async {
     await Future.delayed(Duration(seconds: 2));
-    final acitivies = List.generate(50, (id) {
+    final acitivies = List.generate(60, (id) {
       return Activity(
-        id: Uuid().toString(),
+        id: Uuid().v1(),
         who: "John",
         what:
             "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap",

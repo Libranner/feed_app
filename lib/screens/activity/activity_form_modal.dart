@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:feed_app/models/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class ActivityFormModal extends StatefulWidget {
   final Activity activity;
@@ -145,7 +146,7 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
   void _save() {
     if (_formKey.currentState.validate()) {
       final activity = Activity(
-        id: widget.activity?.id ?? 1000,
+        id: widget.activity?.id ?? Uuid().v1(),
         who: "user-id",
         what: _whatTextController.text,
         where: _whereTextController.text,
