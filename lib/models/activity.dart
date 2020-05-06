@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 class Activity {
@@ -34,6 +35,11 @@ class Activity {
 
   bool isOwner(String userId) {
     return who == userId;
+  }
+
+  String get formattedDate {
+    final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+    return dateFormat.format(when);
   }
 
   Map<String, dynamic> toMap() {

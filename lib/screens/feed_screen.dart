@@ -156,7 +156,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(activity.who),
-                          Text(activity.when.toString()),
+                          Text(activity.formattedDate),
                         ],
                       ),
                     ),

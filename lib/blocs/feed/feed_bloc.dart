@@ -37,7 +37,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   Stream<FeedState> _mapActivityAddedToState(AddActivityToFeed event) async* {
     try {
       yield FeedLoading();
-      Future.delayed(Duration(seconds: 2));
       final feed = event.feed;
       feed.activities.add(event.activity);
       yield FeedLoaded(feed);
@@ -50,7 +49,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       UpdateActivityOnFeed event) async* {
     try {
       yield FeedLoading();
-      await Future.delayed(Duration(seconds: 2));
       final feed = event.feed;
       feed.updateActivity(event.activity);
       yield FeedLoaded(feed);

@@ -63,7 +63,7 @@ class ActivityDetailModal extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(activity.who),
-                              Text(activity.when.toString()),
+                              Text(activity.formattedDate),
                             ],
                           ),
                         ),
