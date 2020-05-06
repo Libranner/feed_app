@@ -71,6 +71,7 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
                         maxLines: 3,
                         decoration: InputDecoration(
                           hintText: 'What you want to do?',
+                          labelText: 'What?',
                         ),
                         keyboardType: TextInputType.text,
                         autocorrect: false,
@@ -79,12 +80,13 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
                           return value.isEmpty ? 'Field is required' : null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
+                      const SizedBox(height: 20.0),
                       TextFormField(
                         controller: _whereTextController,
                         maxLines: 1,
                         decoration: InputDecoration(
-                          hintText: 'Where?',
+                          hintText: 'Pick a cool place',
+                          labelText: 'Where?',
                         ),
                         keyboardType: TextInputType.text,
                         autocorrect: false,
@@ -94,42 +96,48 @@ class _ActivityFormModalState extends State<ActivityFormModal> {
                         },
                       ),
                       const SizedBox(height: 20.0),
-                      Container(
-                        height: 50,
-                        child: DateTimeField(
-                          format: DateFormat('yyyy-MM-dd HH:mm'),
-                          initialValue: widget.activity?.when,
-                          resetIcon: null,
-                          autocorrect: false,
-                          autovalidate: true,
-                          validator: (value) {
-                            return value == null ? 'Field is required' : null;
-                          },
-                          onShowPicker: (context, currentValue) async {
-                            final date = await showDatePicker(
-                                context: context,
-                                firstDate: DateTime.now(),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                            if (date != null) {
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.fromDateTime(
-                                    currentValue ?? DateTime.now()),
-                              );
-                              return DateTimeField.combine(date, time);
-                            } else {
-                              return currentValue;
-                            }
-                          },
-                          controller: _whenTextController,
+                      DateTimeField(
+                        decoration: InputDecoration(
+                          hintText: 'When will it be?',
+                          labelText: 'When?',
                         ),
+                        format: DateFormat('yyyy-MM-dd HH:mm'),
+                        initialValue: widget.activity?.when,
+                        resetIcon: null,
+                        autocorrect: false,
+                        autovalidate: true,
+                        validator: (value) {
+                          return value == null ? 'Field is required' : null;
+                        },
+                        onShowPicker: (context, currentValue) async {
+                          final date = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime.now(),
+                              initialDate: currentValue ?? DateTime.now(),
+                              lastDate: DateTime(2100));
+                          if (date != null) {
+                            final time = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.fromDateTime(
+                                  currentValue ?? DateTime.now()),
+                            );
+                            return DateTimeField.combine(date, time);
+                          } else {
+                            return currentValue;
+                          }
+                        },
+                        controller: _whenTextController,
                       ),
                       const SizedBox(height: 20.0),
                       RaisedButton(
+                        color: Colors.blueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         onPressed: _save,
                         child: Text(
                           _isEditing ? 'Update' : 'Add Activity',
+                          style: TextStyle(color: Colors.white),
                         ),
                       )
                     ],

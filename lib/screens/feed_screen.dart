@@ -124,7 +124,7 @@ class _FeedScreenState extends State<FeedScreen> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              color: const Color.fromRGBO(113, 221, 248, 0.8),
+              color: Colors.blueGrey[200],
               boxShadow: [
                 BoxShadow(
                   color: Colors.black12,
@@ -156,8 +156,20 @@ class _FeedScreenState extends State<FeedScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(activity.who),
-                          Text(activity.formattedDate),
+                          Text(
+                            activity.who,
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(color: Colors.blueGrey),
+                          ),
+                          Text(
+                            activity.formattedDate,
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(color: Colors.white),
+                          ),
                         ],
                       ),
                     ),
@@ -170,6 +182,7 @@ class _FeedScreenState extends State<FeedScreen> {
                     const SizedBox(height: 5.0),
                     Text(
                       activity.what,
+                      style: Theme.of(context).textTheme.subtitle,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),

@@ -10,7 +10,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Feed App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blueAccent,
+        accentColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.grey[200],
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.blueAccent,
+          textTheme: ButtonTextTheme.primary,
+          height: 42.0,
+          disabledColor: Colors.grey,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(21),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: const TextStyle(color: Colors.blueGrey),
+          hintStyle: TextStyle(color: Colors.grey),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.grey,
+            ),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+        ),
       ),
       home: FeedScreen(),
     );

@@ -38,8 +38,7 @@ class Activity {
   }
 
   String get formattedDate {
-    final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
-    return dateFormat.format(when);
+    return '${DateFormat.MMMEd().format(when)} ${DateFormat.Hm().format(when)}';
   }
 
   Map<String, dynamic> toMap() {
