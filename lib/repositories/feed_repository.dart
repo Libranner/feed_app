@@ -53,6 +53,7 @@ class FeedRepositoryImpl implements FeedRepository {
     if (response.statusCode == 200) {
       return true;
     }
+    return false;
   }
 
   @override
