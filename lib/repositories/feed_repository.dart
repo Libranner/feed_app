@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:feed_app/exceptions/server_exception.dart';
 import 'package:feed_app/models/activity.dart';
 import 'package:feed_app/models/feed.dart';
@@ -53,6 +51,7 @@ class FeedRepositoryImpl implements FeedRepository {
     if (response.statusCode == 200) {
       return true;
     }
+
     return false;
   }
 
